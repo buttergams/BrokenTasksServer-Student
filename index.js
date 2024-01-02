@@ -1,10 +1,11 @@
-require('dotenv'); 
+require('dotenv').config; 
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT;
+const mongoose = require('mongoose');
 
 //! Imports
-const db = require('./db');
+const { db } = require('./db');
 const { userController,taskController } = require('./controllers');
 const { setDate } = require('./middleware/date');
 

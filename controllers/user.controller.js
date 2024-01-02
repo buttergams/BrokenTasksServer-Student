@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypts');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.JWT;
 const expiresIn = {expiresIn: "1 day"};
@@ -7,12 +7,12 @@ const { User } = require('../models');
 const { errorHandling, successHandling, incompleteHandling } = require('../helpers');
 
 //! Signup
-router.post('/signup', async() => {
+router.post('/signup', async(req,res) => {
     try {
 
         const { email, password } = req.body;
         
-        const user = User({
+        const user = await User({
             email,
             password: bcrypt.hashSync(password,13)   
         }).save();
@@ -20,7 +20,7 @@ router.post('/signup', async() => {
         let token;
 
         if(user) {
-            token = jwt.signs({id: user._id}, SECRET, expiresIn);
+            token = jwt.sign({id: user._id}, SECRET, expiresIn);
         };
 
         const results = {
